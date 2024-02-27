@@ -9,7 +9,9 @@
 #include <QMessageBox>
 #include <QDialog>
 #include <QLabel>
+#include <memory>
 #include "rviz_common/panel.hpp"
+#include "rstp/rtsp_receiver.h"
 namespace mc
 {
     namespace Images
@@ -25,6 +27,8 @@ namespace mc
             void InitConnect();
             void DeleteItem(const bool & checked);
             void CreateItem(const bool & checked);
+        protected:
+            void onInitialize() override;
         private:
             QFormLayout * mainLayout = nullptr;
             QPushButton * playButton = nullptr;
@@ -38,6 +42,7 @@ namespace mc
             QLineEdit * widthLineEdit = nullptr;
             QLineEdit * lengthLineEdit = nullptr;
             bool m_bChecked = false;
+            std::unique_ptr<mc::rtsp::RtspReceiver> m_pRtspReceiver = nullptr;
         };
     }
 

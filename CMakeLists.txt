@@ -39,6 +39,7 @@ endforeach()
 
 set(${PROJECT_NAME}_source_files
         src/yuv_player_panel.cpp
+        src/rtsp_receiver.cpp
         )
 
 add_library(${PROJECT_NAME} SHARED
@@ -101,5 +102,9 @@ install(
         DIRECTORY include/
         DESTINATION include
 )
+
+install(DIRECTORY TPL/
+        DESTINATION lib
+        FILES_MATCHING PATTERN "*.so")
 
 ament_package()

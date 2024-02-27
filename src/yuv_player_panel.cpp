@@ -8,6 +8,18 @@ namespace mc
 {
     namespace Images
     {
+        static void rtspCallBack(uint8_t *yData,uint8_t * uData,uint8_t *vData,const int &ySize,const int &uSize,const int &vSize,void *ptr)
+        {
+            if(ptr==nullptr)
+            {
+                std::cout<<"opengl yuv widget not init"<<std::endl;
+            }
+        //     if(auto play = static_cast<YUVGLWidget*>(ptr))
+        //     {
+        //         play->Update(yData,uData,vData,ySize,uSize,vSize);
+        // //        play->update();
+        //     }
+        }
         YuvPlayerPanel::YuvPlayerPanel(QWidget *parent)
             : rviz_common::Panel(parent)
             {
@@ -53,18 +65,23 @@ namespace mc
                     m_bChecked = false;
                     if(widthLineEdit->text().isEmpty()||lengthLineEdit->text().isEmpty()||rtspLineEdit->text().isEmpty())
                     {
-                        QMessageBox::warning(this, "警告", "请输入完整参数!");
+                        QMessageBox::warning(this, "Error", "Please enter all parameters.!");
                         return;
                     }
                     width_ = widthLineEdit->text().toInt();
                     length_ = lengthLineEdit->text().toInt();
                     str_info = rtspLineEdit->text().toStdString();
+                    if(m_pRtspReceiver)
+                    {
+                        m_pRtspReceiver->Init(str_info);
+                        m_pRtspReceiver->OpenAndCb(rtspCallBack,nullptr);
+                    }
                 }
                 else
                 {
                     if(widthLineEdit->text().isEmpty()||lengthLineEdit->text().isEmpty()||topicLineEdit->text().isEmpty())
                     {
-                        QMessageBox::warning(this, "警告", "请输入完整参数!");
+                        QMessageBox::warning(this, "Error", "Please enter all parameters.!");
                         return ;
                     }
                     width_ = widthLineEdit->text().toInt();
@@ -113,16 +130,23 @@ namespace mc
             std::cout<<"create item "<<checked<<std::endl;
             playButton = new QPushButton(QStringLiteral("PLAY"));
             
-            videoUrl = new QLabel("rtsp地址:");
-            videoTopic = new QLabel("视频Topic:");
-            videoWith = new QLabel("视频宽度:");
-            videoLength = new QLabel("视频长度:");
+            videoUrl = new QLabel("rtsp Address:");
+            videoTopic = new QLabel("video Topic:");
+            videoWith = new QLabel("video width:");
+            videoLength = new QLabel("video height:");
             rtspLineEdit = new QLineEdit();
             topicLineEdit = new QLineEdit();
             widthLineEdit = new QLineEdit();
             lengthLineEdit = new QLineEdit();
         }
     } //namespace Images
+        void Images::YuvPlayerPanel::onInitialize()
+        {
+            if(m_pRtspReceiver==nullptr)
+            {
+                m_pRtspReceiver = std::unique_ptr<mc::rtsp::RtspReceiver>(new mc::rtsp::RtspReceiver);
+            }
+        }
 } // namespace mc
 #include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS(mc::Images::YuvPlayerPanel, rviz_common::Panel)
