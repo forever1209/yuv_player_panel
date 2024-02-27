@@ -24,7 +24,7 @@ find_package(rclcpp REQUIRED)
 find_package(rviz_assimp_vendor REQUIRED)
 find_package(rviz_rendering REQUIRED)
 find_package(rviz_common REQUIRED)
-
+link_directories(TPL)
 ament_package_xml()
 set(ROS_DISTRO "ROS 2")
 set(OGRE_PLUGIN_PATH "rviz_ogre_vendor")
@@ -46,7 +46,6 @@ add_library(${PROJECT_NAME} SHARED
         ${${PROJECT_NAME}_moc_files}
         ${${PROJECT_NAME}_source_files}
         )
-
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -58,6 +57,8 @@ target_link_libraries(${PROJECT_NAME}
         rviz_ogre_vendor::OgreMain
         rviz_ogre_vendor::OgreOverlay
         Qt5::Widgets
+        wjRtsp
+        ssl crypto
         )
 
 ament_target_dependencies(${PROJECT_NAME}
