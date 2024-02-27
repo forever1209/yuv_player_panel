@@ -1,0 +1,9 @@
+<library path="libyuv_player_panel">
+    <class name="mc/Images/YuvPlayerPanel"
+           type="mc::Images::YuvPlayerPanel"
+           base_class_type="rviz_common::Panel">
+        <description>
+            yuv_player_panel
+        </description>
+    </class>
+</library>
