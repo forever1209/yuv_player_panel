@@ -24,7 +24,7 @@ namespace mc
             : rviz_common::Panel(parent)
             {
                 InitWidget();
-                InitConnect();
+                // InitConnect();
             }
         void YuvPlayerPanel::InitWidget()
         {
@@ -56,6 +56,11 @@ namespace mc
                 mainLayout->addRow(playButton);
 
             });
+            this->setLayout(mainLayout);
+        }
+
+        void YuvPlayerPanel::InitConnect()
+        {
             connect(playButton,&QPushButton::clicked,this,[this](){
                 int width_ = 0;
                 int length_ = 0;
@@ -76,6 +81,10 @@ namespace mc
                         m_pRtspReceiver->Init(str_info);
                         m_pRtspReceiver->OpenAndCb(rtspCallBack,nullptr);
                     }
+                    else
+                    {
+                        std::cout<<"m_pRtspReceiver is nullptr please init"<<std::endl;
+                    }
                 }
                 else
                 {
@@ -90,12 +99,6 @@ namespace mc
                 }
                 //TODO:add widget init by width length
             });
-            this->setLayout(mainLayout);
-        }
-
-        void YuvPlayerPanel::InitConnect()
-        {
-
         }
         void YuvPlayerPanel::DeleteItem(const bool & checked)
         {
@@ -138,15 +141,16 @@ namespace mc
             topicLineEdit = new QLineEdit();
             widthLineEdit = new QLineEdit();
             lengthLineEdit = new QLineEdit();
+            InitConnect();
         }
-    } //namespace Images
-        void Images::YuvPlayerPanel::onInitialize()
+        void YuvPlayerPanel::onInitialize()
         {
             if(m_pRtspReceiver==nullptr)
             {
                 m_pRtspReceiver = std::unique_ptr<mc::rtsp::RtspReceiver>(new mc::rtsp::RtspReceiver);
             }
         }
+    } //namespace Images
 } // namespace mc
 #include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS(mc::Images::YuvPlayerPanel, rviz_common::Panel)
