@@ -5,11 +5,11 @@ namespace mc
     {
         static void MyCallBack(ClientHandle handle,FrameInfo  info)
         {
-            if(auto ptr = static_cast<mc::rtsp::RtspReceiver*>(handle))
-            {
-                std::cout<<"change success"<<std::endl;
-                ptr->DataPop(info.framebuffer,info.size);
-            }
+            // if(auto ptr = static_cast<mc::rtsp::RtspReceiver*>(handle))
+            // {
+            //     std::cout<<"change success"<<std::endl;
+            //     ptr->DataPop(info.framebuffer,info.size);
+            // }
             std::cout<<"call back"<<info.type<<"----"<<info.capture_sec_time<<" , size "<<info.size<<std::endl;
         }
         RtspReceiver::RtspReceiver()
@@ -34,7 +34,7 @@ namespace mc
             if(l_rtspH==nullptr)
             {
                 l_rtspH = RtspClientCreate();
-                ReginstCallBack(l_rtspH, this,MyCallBack);
+                ReginstCallBack(l_rtspH, nullptr,MyCallBack);
                 RTSPClientOpenStream(l_rtspH, (char*)m_strUrl.c_str());
             }
             else
