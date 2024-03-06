@@ -27,20 +27,24 @@ namespace mc
         {
             m_strUrl = url;
         }
-        bool RtspReceiver::OpenAndCb(CallBack cb, void *ptr)
+        void RtspReceiver::ThreadOpen()
         {
-            m_cb = cb;
-            clinetPtr = ptr;
             if(l_rtspH==nullptr)
             {
                 l_rtspH = RtspClientCreate();
-                ReginstCallBack(l_rtspH, nullptr,MyCallBack);
+                ReginstCallBack(l_rtspH, this,MyCallBack);
                 RTSPClientOpenStream(l_rtspH, (char*)m_strUrl.c_str());
             }
             else
             {
                 Close();
             }
+        }
+        bool RtspReceiver::OpenAndCb(CallBack cb, void *ptr)
+        {
+            m_cb = cb;
+            clinetPtr = ptr;
+            m_pthRead = std::unique_ptr<std::thread>(new std::thread(&RtspReceiver::ThreadOpen,this));
             return true;
         }
         void RtspReceiver::DataPop(uint8_t *data, const uint32_t &len)
