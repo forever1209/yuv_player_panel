@@ -152,7 +152,7 @@ namespace mc
             defaultFormat.setProfile(QSurfaceFormat::CoreProfile);
             defaultFormat.setVersion(4, 6); // Adapt to your system
             QSurfaceFormat::setDefaultFormat(defaultFormat);
-            yuvWidget = new YUVGLWidget();
+            yuvWidget = new YUVGLWidget(defaultFormat);
             InitConnect();
         }
         void YuvPlayerPanel::onInitialize()
