@@ -17,7 +17,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rviz_ogre_vendor REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL)
 
 find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -31,6 +31,7 @@ set(OGRE_PLUGIN_PATH "rviz_ogre_vendor")
 
 set(${PROJECT_NAME}_headers_to_moc
         include/yuv_player_panel/yuv_player_panel.h
+        include/yuv_widget/yuvglwidget.h
         )
 
 foreach(header "${${PROJECT_NAME}_headers_to_moc}")
@@ -40,6 +41,7 @@ endforeach()
 set(${PROJECT_NAME}_source_files
         src/yuv_player_panel.cpp
         src/rtsp_receiver.cpp
+        src/yuvglwidget.cpp
         )
 
 add_library(${PROJECT_NAME} SHARED
@@ -57,6 +59,7 @@ target_link_libraries(${PROJECT_NAME}
         rviz_ogre_vendor::OgreMain
         rviz_ogre_vendor::OgreOverlay
         Qt5::Widgets
+        Qt5::OpenGL
         wjRtsp
         ssl crypto
         )
