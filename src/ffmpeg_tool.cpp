@@ -1,5 +1,4 @@
 #include "ffmpeg/ffmpeg_tool.h"
-#include "ffmpeg_tool.h"
 namespace mc
 {
     namespace video
