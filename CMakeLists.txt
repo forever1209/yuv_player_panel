@@ -42,6 +42,7 @@ set(${PROJECT_NAME}_source_files
         src/yuv_player_panel.cpp
         src/rtsp_receiver.cpp
         src/yuvglwidget.cpp
+        src/ffmpeg_tool.cpp
         )
 
 add_library(${PROJECT_NAME} SHARED
@@ -62,6 +63,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt5::OpenGL
         wjRtsp
         ssl crypto
+        -lavcodec -lswscale -lavutil
         )
 
 ament_target_dependencies(${PROJECT_NAME}
@@ -109,6 +111,7 @@ install(
 
 install(DIRECTORY TPL/
         DESTINATION lib
-        FILES_MATCHING PATTERN "*.so")
+        FILES_MATCHING PATTERN "*")
+
 
 ament_package()
