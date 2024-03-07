@@ -1,4 +1,4 @@
-#include "yuvglwidget.h"
+#include "yuv_widget/yuvglwidget.h"
 #include <iostream>
 #include <QPainter>
 const char* vertexShaderSource = R"glsl(
