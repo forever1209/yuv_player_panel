@@ -12,6 +12,7 @@
 #include <memory>
 #include "rviz_common/panel.hpp"
 #include "rstp/rtsp_receiver.h"
+class YUVGLWidget;
 namespace mc
 {
     namespace Images
@@ -43,6 +44,7 @@ namespace mc
             QLineEdit * lengthLineEdit = nullptr;
             bool m_bChecked = false;
             std::unique_ptr<mc::rtsp::RtspReceiver> m_pRtspReceiver = nullptr;
+            YUVGLWidget * yuvWidget = nullptr;
         };
     }
 

@@ -2,8 +2,9 @@
 #include "rviz_common/interaction/selection_manager.hpp"
 #include "rviz_common/visualization_manager.hpp"
 #include "yuv_player_panel/yuv_player_panel.h"
+#include "yuv_widget/yuvglwidget.h"
 #include <QLabel>
-
+#include <QSurfaceFormat>
 namespace mc
 {
     namespace Images
@@ -97,6 +98,12 @@ namespace mc
                     length_ = lengthLineEdit->text().toInt();
                     str_info = topicLineEdit->text().toStdString();
                 }
+                if(!yuvWidget)
+                {
+                    return;
+                }
+                yuvWidget->setFrameSize(width_,length_);
+                mainLayout->addRow(yuvWidget);
                 //TODO:add widget init by width length
             });
         }
@@ -141,6 +148,11 @@ namespace mc
             topicLineEdit = new QLineEdit();
             widthLineEdit = new QLineEdit();
             lengthLineEdit = new QLineEdit();
+            QSurfaceFormat defaultFormat = QSurfaceFormat::defaultFormat();
+            defaultFormat.setProfile(QSurfaceFormat::CoreProfile);
+            defaultFormat.setVersion(4, 6); // Adapt to your system
+            QSurfaceFormat::setDefaultFormat(defaultFormat);
+            yuvWidget = new YUVGLWidget();
             InitConnect();
         }
         void YuvPlayerPanel::onInitialize()
