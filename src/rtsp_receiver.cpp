@@ -52,7 +52,14 @@ namespace mc
         }
         void RtspReceiver::DataPop(uint8_t *data, const uint32_t &len)
         {
-            m_pFmpegTool->DecodeOneFrame(data,len);
+            auto resFrame = m_pFmpegTool->DecodeOneFrame(data,len);
+            if(resFrame!=nullptr)
+            {
+                if(m_cb!=nullptr)
+                {
+                    m_cb(resFrame->data[0],resFrame->data[1],resFrame->data[2],resFrame->linesize[0],resFrame->linesize[1],resFrame->linesize[2],clinetPtr);
+                }
+            }
         }
         void RtspReceiver::Close()
         {

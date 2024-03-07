@@ -15,11 +15,11 @@ namespace mc
             {
                 std::cout<<"opengl yuv widget not init"<<std::endl;
             }
-        //     if(auto play = static_cast<YUVGLWidget*>(ptr))
-        //     {
-        //         play->Update(yData,uData,vData,ySize,uSize,vSize);
-        // //        play->update();
-        //     }
+            if(auto play = static_cast<YUVGLWidget*>(ptr))
+            {
+                play->Update(yData,uData,vData,ySize,uSize,vSize);
+        //        play->update();
+            }
         }
         YuvPlayerPanel::YuvPlayerPanel(QWidget *parent)
             : rviz_common::Panel(parent)
@@ -80,7 +80,6 @@ namespace mc
                     if(m_pRtspReceiver)
                     {
                         m_pRtspReceiver->Init(str_info);
-                        m_pRtspReceiver->OpenAndCb(rtspCallBack,nullptr);
                     }
                     else
                     {
@@ -104,6 +103,7 @@ namespace mc
                 }
                 yuvWidget->setFrameSize(width_,length_);
                 mainLayout->addRow(yuvWidget);
+                m_pRtspReceiver->OpenAndCb(rtspCallBack,yuvWidget);
                 //TODO:add widget init by width length
             });
         }
