@@ -7,6 +7,10 @@
 typedef void (*CallBack)(uint8_t *yData,uint8_t * uData,uint8_t *vData,const int &ySize,const int &uSize,const int &vSize,void *ptr);
 namespace mc
 {
+    namespace video
+    {
+        class FFmpegTool;
+    }
     namespace rtsp
     {
         class RtspReceiver
@@ -27,6 +31,7 @@ namespace mc
             CallBack m_cb=nullptr;
             void * clinetPtr = nullptr;
             std::unique_ptr<std::thread> m_pthRead = nullptr;
+            mc::video::FFmpegTool * m_pFmpegTool = nullptr;
         };
     }
 }

@@ -1,20 +1,22 @@
 #include "rstp/rtsp_receiver.h"
+#include "ffmpeg/ffmpeg_tool.h"
 namespace mc
 {
     namespace rtsp
     {
         static void MyCallBack(ClientHandle handle,FrameInfo  info)
         {
-            // if(auto ptr = static_cast<mc::rtsp::RtspReceiver*>(handle))
-            // {
-            //     std::cout<<"change success"<<std::endl;
-            //     ptr->DataPop(info.framebuffer,info.size);
-            // }
-            std::cout<<"call back"<<info.type<<"----"<<info.capture_sec_time<<" , size "<<info.size<<std::endl;
+            if(auto ptr = static_cast<mc::rtsp::RtspReceiver*>(handle))
+            {
+                std::cout<<"change success"<<std::endl;
+                ptr->DataPop(info.framebuffer,info.size);
+            }
+            //std::cout<<"call back"<<info.type<<"----"<<info.capture_sec_time<<" , size "<<info.size<<std::endl;
         }
         RtspReceiver::RtspReceiver()
         {
             m_strUrl = "";
+            m_pFmpegTool = new mc::video::FFmpegTool();
         }
         RtspReceiver::~RtspReceiver()
         {
@@ -26,6 +28,7 @@ namespace mc
         void RtspReceiver::Init(const std::string &url)
         {
             m_strUrl = url;
+            m_pFmpegTool->InitDecoder();
         }
         void RtspReceiver::ThreadOpen()
         {
@@ -49,6 +52,7 @@ namespace mc
         }
         void RtspReceiver::DataPop(uint8_t *data, const uint32_t &len)
         {
+            m_pFmpegTool->DecodeOneFrame(data,len);
         }
         void RtspReceiver::Close()
         {
